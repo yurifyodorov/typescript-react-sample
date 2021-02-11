@@ -1,0 +1,9 @@
+.article-list {
+  background: yellow;
+  padding: 20px;
+}
+
+.article-list > .article {
+  background: green;
+  padding: 10px;
+}
