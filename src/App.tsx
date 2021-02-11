@@ -1,28 +1,41 @@
-import React from "react";
-import logo from "./logo.svg";
+import React, { createContext } from "react";
 import "./App.css";
 
-import Card from "./components/Card/Card";
-import Button from "./components/Button/Button";
-import ArticleList from "./components/ArticleList/ArticleList";
-import Counter from "./components/Counter/Counter";
-import Display from "./components/Display/Display";
+// We define our type for the context properties right here
+type ContextProps = {
+  authenticated: boolean;
+  lang: string;
+  theme: string;
+};
 
-function App() {
+// we initialise them without default values, to make that happen, we
+// apply the Partial helper type.
+const AppContext = createContext<Partial<ContextProps>>({});
+
+const Header = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-      </header>
-      <main className="App-main">
-        <Card title="Welcome!" paragraph="To this example" />
-        <Button text="кнопка" />
-        <ArticleList children />
-        <Counter />
-        <Display />
-      </main>
-    </div>
+    <AppContext.Consumer>
+      {({ authenticated }) => {
+        if (authenticated) {
+          return <h1>Logged in!</h1>;
+        }
+        return <h1>You need to sign in</h1>;
+      }}
+    </AppContext.Consumer>
   );
-}
+};
+
+// Now, we can set only the properties we really need
+const App = () => {
+  return (
+    <AppContext.Provider
+      value={{
+        authenticated: true,
+      }}
+    >
+      <Header />
+    </AppContext.Provider>
+  );
+};
 
 export default App;
